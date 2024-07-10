@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sudoku Solver</title>
+</head>
+<body>
+    <H1>Sodoku solver</H1>
+    <div class="container"></div>
+    <div class="input_area">
+        <input type="number" onchange="setSudoku()" class="size" name="size"  min="2" max="100" step="1">
+        <button class="checker" onclick="solveSudoku()">Solve</button>
+    </div>
+    <div class="navigate"></div>
+    <script src="{{ url_for('static', filename='script.js') }}"></script>
+</body>
+</html>
