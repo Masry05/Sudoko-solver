@@ -2,7 +2,7 @@ from flask import Flask, request, jsonify, render_template
 from pyswip import Prolog, Variable
 
 def sudoku(data):
-    
+
     # Initialize Prolog instance
     prolog = Prolog()
 
@@ -20,10 +20,10 @@ def sudoku(data):
         try:
             result[0]["X1"]
         except KeyError:
-            result = jsonify("Correct Solution")
+            result = jsonify("This is a correct solution!!!")
         return result
     else:
-        return  jsonify("No solution found")
+        return  jsonify("Impossible to find a solution / wrong input")
         
 app = Flask(__name__)
 

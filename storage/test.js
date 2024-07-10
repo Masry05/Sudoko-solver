@@ -1,1 +1,2 @@
-console.log(Number("1"));
+if(true)
+    console.log("working")

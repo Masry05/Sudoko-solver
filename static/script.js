@@ -1,6 +1,6 @@
 let original_sudoku;
 let solution;
-let solution_number = 0;
+let solution_number;
 function setSudoku(){
     const size= Number(document.querySelector(".size").value);
     document.querySelector(".container").innerHTML="";
@@ -62,7 +62,7 @@ function setSudoku(){
 function solveSudoku(){
     original_sudoku = [];
     solution = null;
-    solution_number = 0;
+    solution_number = -1;
     const size= Number(document.querySelector(".size").value);
     let query = "[";
     let variables_counter = 1;
@@ -73,12 +73,12 @@ function solveSudoku(){
             let cell = document.getElementById(`${i},${j}`).value
             if(cell.length == 0){
                 row += ("X"+variables_counter);
-                row_list.push(Number(cell));
+                row_list.push("_");
                 variables_counter++;
             }
             else{
                 row += cell;
-                row_list.push("_");
+                row_list.push(Number(cell));
               }
             row += ",";
         }
@@ -102,20 +102,57 @@ function solveSudoku(){
     })
     .then(response => response.json())
     .then(data => {
-      solution=data;
-      variables_counter = 1;
-      for(let i = 0; i<size;i++)
-        for(let j=0;j<size;j++){
-            let cell = document.getElementById(`${i},${j}`).value
-            if(cell.length == 0){
-              document.getElementById(`${i},${j}`).value = data[solution_number]["X"+variables_counter];
-              variables_counter++;
-            }
+      if(data == "This is a correct solution!!!" || data == "Impossible to find a solution / wrong input")
+        alert(data);
+      else{
+        solution=data;
+        if(solution.length>1){
+          document.querySelector(".navigate").innerHTML =
+          `<button onclick="manageSolutions(false)"><- back</button>
+          <button onclick="manageSolutions(true)">next -></button>`;
+        }
+        else{
+          document.querySelector(".navigate").innerHTML =
+          `<button onclick="manageSolutions(false)"><- back</button>`;
+        }
+        document.querySelector(".input_area").style.display = "none";
+        manageSolutions(true);
       }
-      solution_number++
     })
     .catch((error) => {
         console.error('Error:', error);
     });
 }
-
+function manageSolutions(direction){
+  //false = back
+  //true = next
+  const size= Number(document.querySelector(".size").value);
+  if(!direction){
+    if(solution_number == 0){
+      document.querySelector(".input_area").style.display = "";
+      for(let i = 0; i<size;i++)
+        for(let j=0;j<size;j++){
+          if(original_sudoku[i][j] != "_")
+            document.getElementById(`${i},${j}`).value = original_sudoku[i][j];
+          else
+            document.getElementById(`${i},${j}`).value = "";
+          }
+      document.querySelector(".navigate").innerHTML = "";
+    }
+    solution_number--;
+  }
+  else{
+    if(solution_number==solution.length-2)
+      document.querySelector(".navigate").innerHTML =
+      `<button onclick="manageSolutions(false)"><- back</button>`;
+    solution_number++  
+  }
+  variables_counter = 1;
+    for(let i = 0; i<size;i++)
+      for(let j = 0;j<size;j++){
+          if(original_sudoku[i][j] == "_" && solution_number >= 0){
+            document.getElementById(`${i},${j}`).value = solution[solution_number]["X"+variables_counter];
+            variables_counter++;
+          }
+      }
+}
