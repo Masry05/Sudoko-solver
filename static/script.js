@@ -139,6 +139,11 @@ function manageSolutions(direction){
           }
       document.querySelector(".navigate").innerHTML = "";
     }
+    else{
+      document.querySelector(".navigate").innerHTML =
+      `<button onclick="manageSolutions(false)"><- back</button>
+       <button onclick="manageSolutions(true)">next -></button>`;  
+    }  
     solution_number--;
   }
   else{
