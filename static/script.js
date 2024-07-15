@@ -3,7 +3,7 @@ let solution;
 let solution_number;
 let perfect_square_flag;
 let perfect_square_value;
-
+let dye_flag = false;
 function setSudoku() {
     const size = Number(document.querySelector(".size").value);
     if (size >= 2) {
@@ -36,6 +36,9 @@ function setSudoku() {
 }
 
 function check(i, j, size, key) {
+    if(dye_flag){
+        changeColors(0);
+    }
     if (key === "Enter") {
         if (i === size - 1 && j === size - 1) {
             solveSudoku()
@@ -126,9 +129,11 @@ function solveSudoku() {
     })
     .then(response => response.json())
     .then(data => {
-        if (data == "This is a correct solution!!!" || data == "Impossible to find a solution / wrong input") {
-            alert(data);
-        } else {
+        if (data == "This is a correct solution!!!" )
+            changeColors(1);
+        else if(data == "Impossible to find a solution / wrong input")
+            changeColors(2);
+        else {
             solution = data;
             if (solution.length > 1) {
                 document.querySelector(".navigate").innerHTML =
@@ -244,4 +249,30 @@ function resetSudoku() {
     }
     solution_number = 0;
     manageSolutions(false);
+    changeColors(0);
+}
+
+function changeColors(code){
+    // 0 = reset all
+    // 1 = green
+    // 2 = red
+    if(code == 0)
+        dye_flag = false;
+    else
+        dye_flag = true;
+
+    const size = Number(document.querySelector(".size").value); 
+    for(let i = 0; i<size; i++)
+        for(let j = 0;j<size; j++){
+            let cell = document.getElementById(`${i},${j}`);
+            switch(code){
+                case 0 : 
+                    cell.style.boxShadow = "";break;
+                case 1:
+                    cell.style.boxShadow = 'inset 0 0 15px green';break;
+                case 2:
+                    if(cell.value.length>0)
+                        cell.style.boxShadow = 'inset 0 0 15px red';break;
+            }
+        }
 }
