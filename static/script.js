@@ -100,7 +100,7 @@ function startTimer() {
         time_flag=true;
         timeout = setTimeout(() => {
             alert("Sudoku took too long to be processed, please try another one!");
-        }, 10100);
+        }, 30100);
         solveSudoku();
     }
     else{

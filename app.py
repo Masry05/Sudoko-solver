@@ -24,11 +24,11 @@ def sudoku(data):
     query_process = multiprocessing.Process(target=query_prolog, args=(result_dict, query))
     query_process.start()
 
-    # Wait for the process to finish or timeout after 10 seconds
-    query_process.join(timeout=10)
+    # Wait for the process to finish or timeout after 30 seconds
+    query_process.join(timeout=30)
 
     if query_process.is_alive():
-        # If the process is still alive after 10 seconds, it means the query took too long
+        # If the process is still alive after 30 seconds, it means the query took too long
         query_process.terminate()
         query_process.join()
         return jsonify("Sudoku took too long to process"), 408
