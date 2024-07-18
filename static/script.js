@@ -4,7 +4,10 @@ let solution_number;
 let perfect_square_flag;
 let perfect_square_value;
 let dye_flag = false;
+let time_flag= false;
+let timeout;
 function setSudoku() {
+    document.querySelector(".checker").innerHTML ="Solve";
     const size = Number(document.querySelector(".size").value);
     if (size >= 2) {
         document.querySelector(".container").style.display = "";
@@ -89,6 +92,21 @@ function movement(i, j, size, key) {
     }
 }
 
+
+function startTimer() {
+    // flase = nothing is running
+    // true = something is running and throw and alert
+    if(!time_flag){
+        time_flag=true;
+        timeout = setTimeout(() => {
+            alert("Sudoku took too long to be processed, please try another one!");
+        }, 10100);
+        solveSudoku();
+    }
+    else{
+        alert("Your last sudoku is still being processed, please wait!");
+    }
+}
 function solveSudoku() {
     solution = null;
     solution_number = -1;
@@ -114,7 +132,6 @@ function solveSudoku() {
         row += "]";
         query += row + ",";
     }
-    console.log(original_sudoku);
     query = query.substring(0, query.length - 1);
     query += "]";
     console.log(query);
@@ -129,10 +146,20 @@ function solveSudoku() {
     })
     .then(response => response.json())
     .then(data => {
+        console.log(data);
+        clearTimeout(timeout);
+        time_flag=false;
         if (data == "This is a correct solution!!!" )
             changeColors(1);
         else if(data == "Impossible to find a solution / wrong input")
             changeColors(2);
+        else if(data == "Sudoku took too long to process"){
+            resetSudoku();
+            document.querySelector(".container").style.display="none";
+            document.querySelector(".size").value="";
+            document.querySelector(".reset").style.display="none";
+            document.querySelector(".checker").innerHTML="Set";
+        }
         else {
             solution = data;
             if (solution.length > 1) {

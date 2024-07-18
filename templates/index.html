@@ -5,13 +5,15 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>Sudoku Solver</title>
         <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+        <link rel="icon" href="{{ url_for('static', filename='icon.ico') }}" type="image/x-icon">
+
     </head>
 <body>
     <img src="{{ url_for('static', filename='logo.png') }}" width="704" height="78" style="margin-bottom: 20px; margin-top: -20px;">
     <div class="container" style="display: none;"></div>
     <div class="input_area">
         <input type="number" placeholder="Enter Size" onchange="setSudoku()" class="size" name="size"  min="2" max="100" step="1">
-        <button class="checker" onclick="solveSudoku()">Solve</button>
+        <button class="checker" onclick="startTimer();">Set</button>
     </div>
     <div class="navigate"></div>
     <button class="reset" onclick="resetSudoku();" style="display: none;">reset</button>

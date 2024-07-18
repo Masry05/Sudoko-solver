@@ -79,7 +79,7 @@
     padding: 10px 20px;
     border: none;
     border-radius: 5px;
-    background: #2e8b57;
+    background: #4e54c8;
     color: #fff;
     font-size: 1em;
     cursor: pointer;
@@ -87,7 +87,7 @@
   }
   
   button:hover {
-    background: rgb(67, 184, 77);
+    background: #6c6fdd;
   }
   
   button:focus {
